@@ -63,14 +63,14 @@ CPU: 可运行，但训练速度较慢
 直接复现最高准确率 (93.77%) 的实验结果：
 
 ```bash
-python scripts/train_sota.py --model efficientnet_b2 --resize 64 --pretrained
+python Adapt-Attention-3pro.py
 ```
 运行可视化分析
 加载训练好的模型，生成 Grad-CAM 热力图和混淆矩阵：
 
 ```bash
 
-python scripts/visualize.py --model_path checkpoints/final_effnet_b2_95acc.pth
+python Plot.py
 ```
 
 运行消融实验
@@ -79,7 +79,7 @@ python scripts/visualize.py --model_path checkpoints/final_effnet_b2_95acc.pth
 
 ```bash
 
-python scripts/ablation_study.py
+python MVP.py
 ```
 
 ## 📊 5. 实验演进与结果 (Experiment Pipeline)
