@@ -1,3 +1,4 @@
+# CIFAR-10 Image Classification: From Baseline to SOTA (93.77%)
 
 ## 实验三：基于 CIFAR-10 图像分类模型的设计与实现
 
@@ -69,7 +70,7 @@ CPU: 可运行，但训练速度较慢
 
 运行 SOTA 模型训练 (阶段三 Pro)
 
-直接复现最高准确率 (93.77%) 的实验结果：
+直接复现最高准确率 **(93.77%)** 的实验结果：
 
 ```bash
 python Adapt-Attention-3pro.py
