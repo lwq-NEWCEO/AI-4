@@ -6,12 +6,19 @@
 ## 我的电脑配置
 
 ### 一、硬件配置
+
 处理器：Intel (R) Core (TM) Ultra 9 275HX，24 核，基础主频 2.70GHz
+
 内存：32.0GB 物理内存（可用 31.4GB）
+
 显卡：NVIDIA GeForce RTX 5080 Laptop GPU
+
 ### 二、软件配置
+
 操作系统：Windows 11 家庭中文版 64 位
+
 图形接口：DirectX 12
+
 显卡驱动：NVIDIA 573.24 DCH 版
 
 ## 📖 1. 项目简介 (Overview)
@@ -25,18 +32,18 @@
 
 ## 📂 2. 项目结构 (Project Structure)
 ```text
-CIFAR10-Classification/
-├── data/                  # CIFAR-10 数据集 (自动下载)
-├── models/                # 模型定义 (SimpleCNN, RefinedCNN, EfficientNetTransfer)
-├── checkpoints/           # 训练好的模型权重 (.pth)
-├── results/               # 实验结果图表 (Loss曲线, 混淆矩阵, Grad-CAM)
-├── scripts/               # 核心执行脚本
-│   ├── train_baseline.py  # 阶段一 & 二：基准与调优训练
-│   ├── train_sota.py      # 阶段三 & 四：EfficientNet 训练与消融实验
-│   ├── visualize.py       # Grad-CAM 与 错误样本分析可视化
-│   └── utils.py           # 工具函数 (早停, 随机种子, 绘图)
-├── requirements.txt       # 项目依赖
-└── README.md              # 项目说明文档
+实验三-罗文琦10235501417/
+├── base.py                   # 阶段一：基准模型 (SimpleCNN) - 快速验证
+├── refined_cnn.py            # 阶段二：调优模型 (RefinedCNN) - 加入正则化与BN
+├── Attention-3.py            # 阶段三：注意力机制尝试 (ResNet + SE) - 探索性实验
+├── Adapt-Attention-3pro.py   # 阶段三 Pro：SOTA 模型 (EfficientNet-B2 + Resize) - 核心代码
+├── MVP.py                    # 阶段四：消融实验 (Ablation Study) - 12小时全量对比实验脚本
+├── Plot.py                   # 可视化工具：Grad-CAM 热力图、混淆矩阵、错误样本分析
+├── final_effnet_b2_95acc.pth # 最终训练好的最佳模型权重 (93.77% Acc)
+├── requirements.txt          # 项目依赖库列表
+├── READEME.md                # 项目说明文档
+├── 实验三.docx               # 实验报告 Word 版
+└── 实验三.pdf                # 实验报告 PDF 版
 ```
 ## ⚙️ 3. 安装与环境 (Installation)
 本项目基于 Python 3.14 开发，支持 CPU 和 GPU 训练（推荐使用 GPU）。
@@ -59,13 +66,16 @@ GPU: 启用 CUDA 加速 (推荐显存 >= 4GB)
 CPU: 可运行，但训练速度较慢
 
 ## 🚀 4. 快速开始 (Usage)
+
 运行 SOTA 模型训练 (阶段三 Pro)
+
 直接复现最高准确率 (93.77%) 的实验结果：
 
 ```bash
 python Adapt-Attention-3pro.py
 ```
 运行可视化分析
+
 加载训练好的模型，生成 Grad-CAM 热力图和混淆矩阵：
 
 ```bash
@@ -122,11 +132,13 @@ Resize 64x64: 解决了 32x32 图片经 ResNet/EfficientNet 下采样后特征�
 
 通过控制变量法，量化了各模块的贡献：
 
-实验组	准确率	贡献度	结论
-基准 (EfficientNet-B2)	93.81%	-	SOTA 表现
-无预训练 (No Pretrain)	83.74%	-10.07%	决定下限：预训练权重至关重要
-无分辨率放大 (No Resize)	85.99%	-7.82%	决定上限：解决空间特征丢失问题
-无随机擦除 (No RandomErasing)	92.93%	-0.88%	决定细节：提升鲁棒性和泛化能力
+| 实验设置                       | 测试集准确率 (%) | 与基准相比的性能变化 (%)     | 核心贡献度                 |
+| -------------------------- | ---------- | ------------------ | --------------------- |
+| **基准模型 (完整优化)**            | **93.81%** | -                  | **基准**                |
+| 移除预训练权重 (No Pretrain)      | 83.74%     | **-10.07%** (急剧下降) | **核心，提供通用特征**         |
+| 移除分辨率放大 (No Resize 32x32)  | 85.99%     | **-7.82%** (显著下降)  | **关键，保留空间细节**         |
+| 移除 Label Smoothing (No LS) | 93.81%     | **0.00%** (无明显变化)  | **辅助，可能在高 Epoch 时生效** |
+| 移除 Random Erasing (No RE)  | 92.93%     | **-0.88%** (轻微下降)  | **辅助，增强鲁棒性**          |
 
 ### 6.2 可视化解释 (Grad-CAM)
 
