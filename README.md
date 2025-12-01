@@ -3,6 +3,7 @@
 ## 实验三：基于 CIFAR-10 图像分类模型的设计与实现
 
 作者: lwq-NEWCEO
+Github：https://github.com/lwq-NEWCEO/AI-4/
 
 ## 我的电脑配置
 
